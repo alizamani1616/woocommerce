@@ -2,7 +2,6 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Utils\ProductGalleryUtils;
-use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
 /**
  * ProductImage class.
@@ -357,12 +356,24 @@ class ProductImage extends AbstractBlock {
 	 */
 	protected function render( $attributes, $content, $block ) {
 		$parsed_attributes     = $this->parse_attributes( $attributes );
-		$classes_and_styles    = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array(), array( 'extra_classes', 'padding' ) );
 		$post_id               = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
 		$image_id              = isset( $block->context['imageId'] ) ? (int) $block->context['imageId'] : null;
 		$product               = wc_get_product( $post_id );
 		$resolved_aspect_ratio = $this->resolve_aspect_ratio( $parsed_attributes );
 		$aspect_ratio_class    = 'wc-block-components-product-image--aspect-ratio-' . ( $resolved_aspect_ratio ? str_replace( '/', '-', $resolved_aspect_ratio ) : 'auto' );
+		$style                 = $attributes['style'];
+
+		// We are rendering padding on the inner blocks, so we remove them from
+		// the wrapper.
+		unset( $style['spacing']['padding'] );
+
+		// If a border color is set, we add it to the wrapper styles.
+		if ( ! empty( $attributes['borderColor'] ) ) {
+			$style['border']['color'] = 'var:preset|color|' . $attributes['borderColor'];
+		}
+
+		// Get the classes and styles for the wrapper.
+		$classes_and_styles = wp_style_engine_get_styles( $style );
 
 		$classes = implode(
 			' ',
@@ -370,7 +381,7 @@ class ProductImage extends AbstractBlock {
 				array(
 					'wc-block-components-product-image wc-block-grid__product-image',
 					$aspect_ratio_class,
-					esc_attr( $classes_and_styles['classes'] ),
+					esc_attr( $classes_and_styles['classnames'] ),
 				)
 			)
 		);
@@ -378,7 +389,7 @@ class ProductImage extends AbstractBlock {
 		$wrapper_attributes = get_block_wrapper_attributes(
 			array(
 				'class' => esc_attr( $classes ),
-				'style' => esc_attr( $classes_and_styles['styles'] ),
+				'style' => esc_attr( $classes_and_styles['css'] ),
 			)
 		);
 
