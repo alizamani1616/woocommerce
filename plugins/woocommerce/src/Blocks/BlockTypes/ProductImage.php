@@ -361,7 +361,7 @@ class ProductImage extends AbstractBlock {
 		$product               = wc_get_product( $post_id );
 		$resolved_aspect_ratio = $this->resolve_aspect_ratio( $parsed_attributes );
 		$aspect_ratio_class    = 'wc-block-components-product-image--aspect-ratio-' . ( $resolved_aspect_ratio ? str_replace( '/', '-', $resolved_aspect_ratio ) : 'auto' );
-		$style                 = $attributes['style'];
+		$style                 = $attributes['style'] ?? array();
 
 		// We are rendering padding on the inner blocks, so we remove them from
 		// the wrapper.
@@ -381,7 +381,7 @@ class ProductImage extends AbstractBlock {
 				array(
 					'wc-block-components-product-image wc-block-grid__product-image',
 					$aspect_ratio_class,
-					esc_attr( $classes_and_styles['classnames'] ),
+					esc_attr( $classes_and_styles['classnames'] ?? '' ),
 				)
 			)
 		);
@@ -389,7 +389,7 @@ class ProductImage extends AbstractBlock {
 		$wrapper_attributes = get_block_wrapper_attributes(
 			array(
 				'class' => esc_attr( $classes ),
-				'style' => esc_attr( $classes_and_styles['css'] ),
+				'style' => esc_attr( $classes_and_styles['css'] ?? '' ),
 			)
 		);
 
