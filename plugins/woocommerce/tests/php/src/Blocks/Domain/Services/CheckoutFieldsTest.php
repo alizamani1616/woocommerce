@@ -559,9 +559,16 @@ class CheckoutFieldsTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * A mask that is not a string warns the developer and is dropped.
+	 * @testdox A mask that is not a string warns the developer and is dropped.
+	 *
+	 * @testWith [["000-000"]]
+	 *           [[]]
+	 *           [null]
+	 *           [false]
+	 *
+	 * @param mixed $mask The invalid mask.
 	 */
-	public function test_non_string_mask_is_dropped() {
+	public function test_non_string_mask_is_dropped( $mask ): void {
 		$this->setExpectedIncorrectUsage( 'woocommerce_register_additional_checkout_field' );
 
 		woocommerce_register_additional_checkout_field(
@@ -569,7 +576,7 @@ class CheckoutFieldsTest extends WP_UnitTestCase {
 				'id'       => 'test-namespace/masked-array',
 				'label'    => 'Masked array',
 				'location' => 'order',
-				'mask'     => array( '000-000' ),
+				'mask'     => $mask,
 			)
 		);
 
