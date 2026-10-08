@@ -83,8 +83,6 @@ export const filters = applyFilters( ORDERS_REPORT_FILTERS_FILTER, [
 	},
 ] );
 
-/*eslint-disable max-len*/
-
 /**
  * Orders Report Advanced Filters.
  *
@@ -411,4 +409,3 @@ export const advancedFilters = applyFilters(
 		},
 	}
 );
-/*eslint-enable max-len*/
