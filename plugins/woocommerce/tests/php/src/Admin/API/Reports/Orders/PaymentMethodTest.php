@@ -128,6 +128,20 @@ class PaymentMethodTest extends WC_Unit_Test_Case {
 	}
 
 	/**
+	 * @testdox The include and exclude rules narrow together under match=any, so the table and the totals agree.
+	 */
+	public function test_payment_method_rules_narrow_together_under_match_any(): void {
+		$args = array(
+			'payment_method_is'     => array( 'bacs' ),
+			'payment_method_is_not' => array( 'cheque' ),
+			'match'                 => 'any',
+		);
+
+		$this->assertSame( array( $this->orders['bacs']->get_id() ), $this->get_report_order_ids( $args ) );
+		$this->assertSame( 1, $this->get_stats_orders_count( $args ) );
+	}
+
+	/**
 	 * @testdox The stats report totals honour the payment gateway filter, so they match the table.
 	 */
 	public function test_stats_totals_honour_the_payment_method_filter(): void {

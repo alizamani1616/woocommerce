@@ -1491,13 +1491,15 @@ class DataStore extends SqlQuery implements DataStoreInterface {
 	/**
 	 * Returns payment gateway subquery to be used in WHERE SQL query, based on query arguments from the user.
 	 *
+	 * The include and exclude clauses are always joined with AND, so that "is bacs" and "is not cheque"
+	 * narrow the result together even under `match=any`.
+	 *
 	 * @since 11.3.0
 	 *
-	 * @param array  $query_args Parameters supplied by the user.
-	 * @param string $operator   Boolean operator joining the include and exclude clauses.
+	 * @param array $query_args Parameters supplied by the user.
 	 * @return string
 	 */
-	protected function get_payment_method_subquery( $query_args, $operator = 'AND' ) {
+	protected function get_payment_method_subquery( $query_args ) {
 		global $wpdb;
 
 		$table      = $wpdb->prefix . 'wc_order_stats';
@@ -1514,7 +1516,7 @@ class DataStore extends SqlQuery implements DataStoreInterface {
 			$subqueries[] = "( {$table}.payment_method IS NULL OR {$table}.payment_method NOT IN ( {$excluded} ) )";
 		}
 
-		return implode( " {$operator} ", $subqueries );
+		return implode( ' AND ', $subqueries );
 	}
 
 	/**

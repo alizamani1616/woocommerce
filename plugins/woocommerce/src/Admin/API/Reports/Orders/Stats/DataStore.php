@@ -264,7 +264,7 @@ class DataStore extends ReportsDataStore implements DataStoreInterface {
 		}
 
 		$where_filters[] = $this->get_customer_subquery( $query_args );
-		$where_filters[] = $this->get_payment_method_subquery( $query_args, $operator );
+		$where_filters[] = $this->get_payment_method_subquery( $query_args );
 		$refund_subquery = $this->get_refund_subquery( $query_args );
 		$from_clause    .= $refund_subquery['from_clause'];
 		if ( $refund_subquery['where_clause'] ) {

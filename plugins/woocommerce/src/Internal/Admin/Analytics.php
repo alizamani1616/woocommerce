@@ -201,7 +201,7 @@ class Analytics {
 	 * @return array
 	 */
 	public function add_payment_gateway_settings( $settings ) {
-		// Instantiating every gateway is not cheap, and only the Analytics pages read this.
+		// Instantiating every gateway is not cheap, so skip it outside the wc-admin app, which is the only place that reads this.
 		if ( ! PageController::is_admin_page() || ! WC()->payment_gateways() ) {
 			return $settings;
 		}
