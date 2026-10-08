@@ -23,8 +23,7 @@ class PaymentMethodTest extends WC_Unit_Test_Case {
 	private $orders = array();
 
 	/**
-	 * Date the fixture orders are created and paid on, inside the reporting period the
-	 * queries below ask for.
+	 * Date the fixture orders are created and paid on, inside the reporting period queried below.
 	 */
 	private const ORDER_DATE = '2026-09-04 10:00:00';
 
@@ -39,9 +38,7 @@ class PaymentMethodTest extends WC_Unit_Test_Case {
 			$order->set_payment_method( $gateway );
 			$order->set_status( 'completed' );
 			$order->set_date_created( self::ORDER_DATE );
-			// The report runs on date_paid by default. Setting it here keeps the fixture inside the
-			// reporting period: completing an order otherwise stamps date_paid with the current time,
-			// which puts the order outside the period as soon as the clock leaves that month.
+			// The report runs on date_paid by default, and completing an order otherwise stamps it with the current time.
 			$order->set_date_paid( self::ORDER_DATE );
 			$order->save();
 

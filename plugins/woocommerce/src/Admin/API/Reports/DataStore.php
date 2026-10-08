@@ -1510,8 +1510,7 @@ class DataStore extends SqlQuery implements DataStoreInterface {
 
 		$excluded = $this->get_payment_method_list( $query_args, 'payment_method_is_not' );
 		if ( $excluded ) {
-			// Orders placed without a gateway, and rows written before the column existed, carry NULL.
-			// NOT IN would drop them, and they are not the excluded gateway either.
+			// NOT IN would drop the NULL rows, which are not the excluded gateway either.
 			$subqueries[] = "( {$table}.payment_method IS NULL OR {$table}.payment_method NOT IN ( {$excluded} ) )";
 		}
 

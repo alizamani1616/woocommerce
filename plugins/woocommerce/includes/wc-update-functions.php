@@ -4121,9 +4121,6 @@ function wc_update_1130_delete_unpublished_variation_lookup_rows() {
 /**
  * Backfill the payment method on Analytics order stats rows written before the column existed.
  *
- * Works through the table in batches, oldest order first, and returns true while there is more
- * left to do. Refund rows take the value from the order they refund, which sorts before them.
- *
  * @return bool True when another batch is due.
  */
 function wc_update_1130_backfill_order_stats_payment_method() {
@@ -4175,8 +4172,7 @@ function wc_update_1130_backfill_order_stats_payment_method() {
 		);
 	}
 
-	// A refund holds no payment method of its own, so it takes the refunded order's. That order has
-	// the lower id, so its row was filled by an earlier batch or by the statement above.
+	// A refund holds no payment method of its own, so it takes the refunded order's. That order has the lower id, so its row is already filled.
 	$from_parents = "UPDATE {$stats_table} refunds
 		JOIN {$stats_table} parents ON parents.order_id = refunds.parent_id
 		SET refunds.payment_method = parents.payment_method

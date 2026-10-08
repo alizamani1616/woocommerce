@@ -453,10 +453,7 @@ class Controller extends GenericController implements ExportableInterface {
 	}
 
 	/**
-	 * Get the merchant-facing title of a payment gateway.
-	 *
-	 * Falls back to the stored id for gateways that are no longer installed, so historical
-	 * orders still name what they were paid with.
+	 * Get the merchant-facing title of a payment gateway, or its stored id when it is no longer installed.
 	 *
 	 * @param string $payment_method Payment gateway id.
 	 * @return string

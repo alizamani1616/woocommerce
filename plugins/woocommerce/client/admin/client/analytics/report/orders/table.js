@@ -19,8 +19,7 @@ import { getAdminSetting, PAYMENT_GATEWAYS } from '~/utils/admin-settings';
 const capitalizeFirstLetter = ( expr ) =>
 	expr.charAt( 0 ).toUpperCase() + expr.slice( 1 );
 
-// Gateways that are no longer installed keep the id stored on the order, so the row still
-// names what it was paid with.
+// Gateways that are no longer installed keep the id stored on the order.
 const getPaymentMethodTitle = ( paymentMethod ) =>
 	PAYMENT_GATEWAYS[ paymentMethod ] || paymentMethod || '';
 
